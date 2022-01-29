@@ -1,5 +1,6 @@
 #pragma once
 
+#include <deque>
 extern "C" {
 #include <ucontext.h>
 }
@@ -23,10 +24,9 @@ struct Coroutine {
 };
 
 struct Schedule {
-    ucontext_t  main_;
-    int         cur_co_;
-    Coroutine **coroutines_;
-    int         max_index_;
+    ucontext_t              main_;
+    int                     cur_co_;
+    std::deque<Coroutine *> coroutines_;
 
     static Schedule *getInstance();
     static void      mainCo();
