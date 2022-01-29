@@ -1,0 +1,9 @@
+/*cmake-build*/
+/.idea/
+/*build*/
+/*/_build/
+/*kdev*/
+/.vscode/
+/.cache/
+*.kdev*
+compile_commands.json
