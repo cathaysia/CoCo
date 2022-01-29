@@ -10,7 +10,7 @@ void Schedule::mainCo() {
     s->cur_co_ = -1;
 }
 Schedule *Schedule::getInstance() {
-    static Schedule *s = nullptr;
+    thread_local static Schedule *s = nullptr;
     if(s) return s;
 
     s          = new Schedule;
