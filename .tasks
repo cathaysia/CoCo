@@ -23,7 +23,7 @@ errorformat=%f:%l:%m
 save=1
 
 [project-run]
-command=build/Debug/heap
+command= cmake --build build/Debug && build/Debug/heap
 cwd=$(VIM_ROOT)
 output=terminal
 

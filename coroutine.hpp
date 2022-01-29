@@ -9,7 +9,7 @@ constexpr const int kMAX_UTHREAD_SIZE = 1024;
 
 struct Schedule;
 using CoFun = void (*)(Schedule *s, void *args);
-using cid = int;
+using cid   = int;
 
 struct Coroutine {
     enum State { Stopped, Ready, Running, Suspend };
@@ -19,20 +19,21 @@ struct Coroutine {
     ucontext_t ctx_;
     State      state_;
     char       stack_[kSTACK_SZIE];
+    Coroutine(CoFun func, void *args);
 };
 
 struct Schedule {
-    ucontext_t       main_;
-    int              cur_co_;
-    Coroutine      **coroutines_;
-    int              max_index_;
+    ucontext_t  main_;
+    int         cur_co_;
+    Coroutine **coroutines_;
+    int         max_index_;
 
     static Schedule *getInstance();
     static void      mainCo();
 
-    cid push(CoFun fun, void *args);
-    bool finished();
-    void run(cid id);
+    cid              push(CoFun fun, void *args);
+    bool             finished();
+    void             run(cid id);
     Coroutine::State state(cid id);
     ~Schedule();
 
