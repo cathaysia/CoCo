@@ -1,6 +1,7 @@
 #pragma once
 
 #include <deque>
+
 extern "C" {
 #include <ucontext.h>
 }
@@ -9,18 +10,20 @@ constexpr const int kSTACK_SZIE       = 1024 * 128;
 constexpr const int kMAX_UTHREAD_SIZE = 1024;
 
 struct Schedule;
+
 using CoFun = void (*)(Schedule *s, void *args);
 using cid   = int;
 
 struct Coroutine {
     enum State { Stopped, Ready, Running, Suspend };
 
+    State      state_;
     CoFun      func_;
     void      *args_;
-    ucontext_t ctx_;
-    State      state_;
     char       stack_[kSTACK_SZIE];
+    ucontext_t ctx_;
     Coroutine(CoFun func, void *args);
+    Coroutine(Coroutine const &) = delete;
 };
 
 struct Schedule {
