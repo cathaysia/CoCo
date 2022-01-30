@@ -22,13 +22,16 @@ int main() {
     int       args1[] = { 1 };
     int       args2[] = { 2 };
     Schedule *s       = Schedule::getInstance();
-    cid id1 = s->push(func1, args1);
-    cid id2 = s->push(func2, args2);
-    s->run(id2);
-    s->run(id1);
+    cid       id1     = s->push(func1, args1);
+    cid       id2     = s->push(func2, args2);
     while(!s->finished()) {
-        resume(id2);
-        resume(id1);
+        for(int i = 0; i < s->coroutines_.size(); ++i) {
+            switch(s->coroutines_[i]->state_) {
+                case Coroutine::Ready: s->run(i); break;
+                case Coroutine::Suspend: resume(i); break;
+                default: break;
+            }
+        }
     }
     puts("main over");
     return 0;
